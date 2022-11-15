@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const PORT = 8080
+const PORT = process.env.PORT ||  8080
+const mongosse = require('mongoose')
+const bodyParser = require('body-parser')
 const Contenedor = require('./contenedor')
 const users = new Contenedor('./users.txt')
 
@@ -10,19 +12,12 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const user = [{
-    email: "die@prueba.com",
-    fullName: "diego Estela"
-},{
-    email: "ezequiel@prueba.com",
-    fullName: "ezequiel prueba"
-}
-]
+mongosse.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifieldTopology: true })
+
 
 app.get('/users', async (req, res) => {
-    const allUser = await users.getAll()
-    res.status(300).send(allUser)
-    res.status(400)
+    res.send("se conecto correctamente")
+
 })
 
 
@@ -41,3 +36,5 @@ app.post('/save', async (req, res) => {
 const server = app.listen(PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 })
+
+/* mongodb+srv://DieEstela:<password>@dbdieestela.3fvflkz.mongodb.net/?retryWrites=true&w=majority */
