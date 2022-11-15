@@ -3,10 +3,8 @@ const app = express()
 const cors = require('cors')
 const PORT = process.env.PORT ||  8080
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const Contenedor = require('./contenedor')
-const users = new Contenedor('./users.txt')
 require('dotenv').config();
+const userRouter = require('./src/routes/users')
 
 
 app.use(cors())
@@ -19,9 +17,10 @@ mongoose
 .then(()=> console.log("se conecto correctamente"))
 .catch((err)=> console.error(err))
 
+app.use('/api', userRouter)
 
-app.get('/users', async (req, res) => {
-    res.send("se conecto correctamente")
+app.get('/', async (req, res) => {
+    res.send("Bienvenidx a mi Api")
 
 })
 
